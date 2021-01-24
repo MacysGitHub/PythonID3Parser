@@ -36,7 +36,7 @@ def file3():
 def compare():
     """"This function returns the SHA-1 hash
     of the file passed into it"""
-    print("Building file differences...")
+    print("Building file array for comparison...")
 
     # open file for reading in binary mode
     # with open(filePath, 'rb') as file:
