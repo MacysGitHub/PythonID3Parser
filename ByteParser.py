@@ -6,7 +6,7 @@ from array import array
 
 root = tk.Tk()
 root.attributes('-topmost', 1)
-root.geometry("500x150")
+root.geometry("500x500")
 root.withdraw()
 
 system = platform.system()
@@ -61,6 +61,7 @@ def gettitle(parsedFile):
     if (songTitleArray):
         songName = songTitleName.join(songTitleArray)
         print("Song Title:" + songName)
+        check_sum_text.insert(tk.END, "Song Title: " + songName)
     else:
         print("Format not recognized or cannot find ID3 tag information")
     # if not songTitleArray:
@@ -70,10 +71,9 @@ def gettitle(parsedFile):
     #     songName = songTitleName.join(songTitleArray)
     #     print("Song title: " + songName)
 
-    exit(0)
+    # exit(0)
 
-
-def compare():
+def extract():
     """"This function returns the SHA-1 hash
     of the file passed into it"""
     print("Building file array for comparison...")
@@ -130,6 +130,7 @@ def compare():
                                             global Album
                                             Album = s
                                             print("Album Tag at index: " + str(Album))
+                                            check_sum_text.insert(tk.END, "Album Index in file: " + str(Album) + "\n")
 
         gettitle(parsedFile=parsedFile)
 
@@ -171,19 +172,19 @@ root.lift()
 
 root.update()
 
-check_sum_text = tk.Text(root, height=2, width=64)
+check_sum_text = tk.Text(root, height=10, width=64)
 check_sum_text.pack()
 
-openFile1 = tk.Button(root, text="Open File 1", command=file1)
+openFile1 = tk.Button(root, text="Open MP3 File...", command=file1)
 openFile1.pack()
 
-openFile2 = tk.Button(root, text="Open File 2", command=file2)
-openFile2.pack()
+# openFile2 = tk.Button(root, text="Open File 2", command=file2)
+# openFile2.pack()
+#
+# openFile3 = tk.Button(root, text="Open File 3", command=file3)
+# openFile3.pack()
 
-openFile3 = tk.Button(root, text="Open File 3", command=file3)
-openFile3.pack()
-
-compare = tk.Button(root, text="Compare", command=compare)
+compare = tk.Button(root, text="Extract", command=extract)
 compare.pack()
 
 root.mainloop()
