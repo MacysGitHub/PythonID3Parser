@@ -49,12 +49,16 @@ def gettitle(parsedFile):
                 for m in range(songTitleIndex, len(parsedFile)):
                     if parsedFile[m] != b'\x00':
                         if parsedFile[m] == b'\x54':
-                            break
-                        songTitleArray.append(parsedFile[m].decode(encoding="ascii"))
+                            if parsedFile[m + 1] == b'\x50':
+                                if parsedFile[m + 2] == b'\x45':
+                                    if parsedFile[m + 3] == b'\x31':
+                                        break
+                        songTitleArray.append(parsedFile[m].decode(encoding="UTF-8"))
 
             break
-    print("Extraction complete, displaying song information...")
-    if(len(songTitleArray) > 0):
+
+    print("Parsing complete, displaying song information...")
+    if (songTitleArray):
         songName = songTitleName.join(songTitleArray)
         print("Song Title:" + songName)
     else:
