@@ -57,11 +57,11 @@ def gettitle(parsedFile):
 
             break
 
-    print("Parsing complete, displaying song information...")
+    print("Title parsing complete, displaying song information...")
     if (songTitleArray):
         songName = songTitleName.join(songTitleArray)
         print("Song Title:" + songName)
-        check_sum_text.insert(tk.END, "Song Title: " + songName)
+        metadata_text.insert(tk.END, "Song Title: " + songName)
     else:
         print("Format not recognized or cannot find ID3 tag information")
     # if not songTitleArray:
@@ -130,7 +130,7 @@ def extract():
                                             global Album
                                             Album = s
                                             print("Album Tag at index: " + str(Album))
-                                            check_sum_text.insert(tk.END, "Album Index in file: " + str(Album) + "\n")
+                                            metadata_text.insert(tk.END, "Album Index in file: " + str(Album) + "\n")
 
         gettitle(parsedFile=parsedFile)
 
@@ -171,9 +171,8 @@ root.after_idle(root.attributes, '-topmost', 0)
 root.lift()
 
 root.update()
-
-check_sum_text = tk.Text(root, height=10, width=64)
-check_sum_text.pack()
+metadata_text = tk.Text(root, height=10, width=64)
+metadata_text.pack()
 
 openFile1 = tk.Button(root, text="Open MP3 File...", command=file1)
 openFile1.pack()
