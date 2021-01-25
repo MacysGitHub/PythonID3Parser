@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/PythonByteParser.iml" filepath="$PROJECT_DIR$/.idea/PythonByteParser.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/PythonID3Parser.iml" filepath="$PROJECT_DIR$/.idea/PythonID3Parser.iml" />
     </modules>
   </component>
 </project>
