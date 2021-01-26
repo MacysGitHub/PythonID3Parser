@@ -20,23 +20,6 @@ def file1():
         filePath1 = filedialog.askopenfilename(initialdir=os.environ['USERPROFILE'] + "\\Downloads\\",
                                                title="Select File")
 
-
-def file2():
-    if system != 'Windows':
-        global filePath2
-        filePath2 = filedialog.askopenfilename(initialdir="~/", title="Select File")
-    else:
-        filePath2 = filedialog.askopenfilename(initialdir="C:\\Users\\%USERPROFILE%\\", title="Select File")
-
-
-def file3():
-    if system != 'Windows':
-        global filePath3
-        filePath3 = filedialog.askopenfilename(initialdir="~/", title="Select File")
-    else:
-        filePath3 = filedialog.askopenfilename(initialdir="C:\\Users\\%USERPROFILE%\\", title="Select File")
-
-
 def gettitle(parsedFile):
     global songTitleIndex
     global songTitleArray
@@ -67,29 +50,32 @@ def gettitle(parsedFile):
     if (songTitleArray):
         songName = songTitleName.join(songTitleArray)
         print("Song Title:" + songName)
-        metadata_text.insert(tk.END, "Song Title: " + songName + "\n")
+        if metadata_text_title != 0:
+            metadata_text_title.delete(1.0, tk.END)
+        metadata_text_title.insert(tk.END, "Song Title: " + songName + "\n")
     else:
-        print("Format not recognized or cannot find ID3 tag information")
+        print("Format not recognized or cannot find Song Title tag information")
 
 
 def getartist(parsedFile):
+    global artistName
+    global ArtistInfo
+    global artistArray
+    global artistStartingIndex
+    artistArray = []
     for s in range(len(parsedFile)):
         if parsedFile[s] == b'T':
             if parsedFile[s + 1] == b'P':
                 if parsedFile[s + 2] == b'E':
                     if parsedFile[s + 3] == b'1':
-                        global ArtistInfo
-                        global artistArray
                         artistArray = []
-                        artistIndex = 0
-                        global artistName
                         artistName = ""
-                        ArtistInfo = s + 4
-                        for i in range(ArtistInfo, len(parsedFile)):
+                        ArtistFrameTag = s + 4
+                        for i in range(ArtistFrameTag, len(parsedFile)):
                             if str(parsedFile[i].hex()) == "ff":
                                 if str(parsedFile[i + 1].hex()) == "fe":
-                                    artistIndex = i + 2
-                                    for n in range(artistIndex, len(parsedFile)):
+                                    artistStartingIndex = i + 2
+                                    for n in range(artistStartingIndex, len(parsedFile)):
                                         if parsedFile[n] != b'\x00':
                                             if parsedFile[n] == b'\x54':
                                                 if parsedFile[n + 1] == b'\x50':
@@ -107,9 +93,13 @@ def getartist(parsedFile):
     if (artistArray):
         artistsName = artistName.join(artistArray)
         print("Artist Name:" + artistsName)
-        metadata_text.insert(tk.END, "Artist Name: " + artistsName + "\n")
+        if metadata_text_artist != 0:
+            metadata_text_artist.delete(1.0, tk.END)
+        metadata_text_artist.insert(tk.END, "Artist Name: " + artistsName + "\n")
     else:
-        print("Format not recognized or cannot find ID3 tag information")
+        print("Format not recognized or cannot find Artist tag information")
+
+
 def getAlbum():
     for s in range(len(parsedFile)):
         if parsedFile[s] == b'T':
@@ -119,7 +109,7 @@ def getAlbum():
                         global Album
                         Album = s
                         print("Album Tag at index: " + str(Album))
-                        metadata_text.insert(tk.END, "Album Index in file: " + str(Album) + "\n")
+                        #metadata_text.insert(tk.END, "Album Index in file: " + str(Album) + "\n")
 
 
 def extract():
@@ -192,17 +182,15 @@ root.after_idle(root.attributes, '-topmost', 0)
 root.lift()
 
 root.update()
-metadata_text = tk.Text(root, height=10, width=64)
-metadata_text.pack()
+
+metadata_text_title = tk.Text(root, height=1, width=64)
+metadata_text_title.pack()
+
+metadata_text_artist = tk.Text(root, height=1, width=64)
+metadata_text_artist.pack()
 
 openFile1 = tk.Button(root, text="Open MP3 File...", command=file1)
 openFile1.pack()
-
-# openFile2 = tk.Button(root, text="Open File 2", command=file2)
-# openFile2.pack()
-#
-# openFile3 = tk.Button(root, text="Open File 3", command=file3)
-# openFile3.pack()
 
 compare = tk.Button(root, text="Extract", command=extract)
 compare.pack()
