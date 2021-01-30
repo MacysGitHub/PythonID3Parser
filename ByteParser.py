@@ -102,7 +102,7 @@ def file1():
 
 
 def gettitle(parsedFile):
-    global songTitleIndex
+    songTitleIndex = 0
     global songTitleArray
     global songTitleName
     global titleStart
@@ -141,8 +141,7 @@ def gettitle(parsedFile):
                                             songTitleArray.append(parsedFile[m].decode(encoding="UTF-8"))
                                 break
 
-    print("Title parsing complete, displaying song title...")
-    if (songTitleArray):
+    if songTitleArray:
         songName = songTitleName.join(songTitleArray)
         print("Song Title: " + songName)
         if metadata_text_title != 0:
@@ -191,7 +190,7 @@ def getartist(parsedFile):
                                             artistArray.append(parsedFile[n].decode(encoding="UTF-8"))
 
                                 break
-    print("Artist parsing complete, displaying artist information...")
+
     if artistArray:
         artistsName = artistName.join(artistArray)
         print("Artist Name: " + artistsName)
@@ -203,9 +202,8 @@ def getartist(parsedFile):
 
 
 def getAlbum(parsedFile):
-    global AlbumArrayCombined
     AlbumArrayCombined = ""
-    global AlbumNameArray
+    AlbumNameArray = []
     for s in range(len(parsedFile)):
         if parsedFile[s] == b'T':
             if parsedFile[s + 1] == b'A':
@@ -214,7 +212,6 @@ def getAlbum(parsedFile):
                         global AlbumFrameTagIndex
                         AlbumFrameTagIndex = s + 4
                         AlbumNextTagCheck = []
-                        AlbumNameArray = []
                         AlbumName = ""
                         for i in range(AlbumFrameTagIndex, len(parsedFile)):
                             if str(parsedFile[i].hex()) == "ff":
@@ -236,11 +233,13 @@ def getAlbum(parsedFile):
                                 break
     if AlbumNameArray:
         AlbumName = AlbumArrayCombined.join(AlbumNameArray)
-        print("Album parsing complete, displaying ablum information...")
         print("Album Name: " + AlbumName)
         if metadata_text_album != 0:
             metadata_text_album.delete(1.0, tk.END)
         metadata_text_album.insert(tk.END, "Album: " + AlbumName)
+
+    else:
+        print("Format not recognized or cannot find Album tag information")
 
 
 def extract():
